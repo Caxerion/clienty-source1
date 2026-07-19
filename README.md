@@ -1,6 +1,6 @@
-# Clienty
+# clienty
 
-A media downloader for YouTube, TikTok, and Instagram. Paste a link, pick a format (MP4 or MP3) and quality, and Clienty fetches and converts it for you.
+A media downloader for YouTube, TikTok, and Instagram. Paste a link, pick a format (MP4 or MP3) and quality, and clienty fetches and converts it for you.
 
 Built as a full-stack project: React frontend, Express API, and a Python + yt-dlp/ffmpeg backend pipeline for the actual media processing.
 
@@ -15,7 +15,7 @@ Built as a full-stack project: React frontend, Express API, and a Python + yt-dl
 
 **Frontend**
 - React + Vite
-- Plain CSS (Space Mono + Fraunces fonts)
+- Plain CSS/CSS3 (Space Mono + Fraunces fonts)
 
 **Backend**
 - Node.js + Express
