@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Customs — Declare & Download</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430;
+    --ink-2:#232F3D;
+    --paper:#E4E6DD;
+    --paper-2:#D9DCCE;
+    --amber:#E8A33D;
+    --red:#C1443C;
+    --cream-text:#F2F1EA;
+    --line:rgba(242,241,234,0.16);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    background:
+      radial-gradient(circle at 15% 10%, rgba(232,163,61,0.07), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(193,68,60,0.06), transparent 45%),
+      var(--ink);
+    color:var(--cream-text);
+    font-family:'Space Mono', monospace;
+    min-height:100vh;
+    padding:48px 20px 80px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .sheet{
+    width:100%;
+    max-width:620px;
+  }
+
+  /* header strip */
+  .letterhead{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    border-bottom:1px solid var(--line);
+    padding-bottom:14px;
+    margin-bottom:34px;
+  }
+  .letterhead .mark{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .mark .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--amber);
+    box-shadow:0 0 0 3px rgba(232,163,61,0.18);
+  }
+  .mark span{
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    font-size:11px;
+    color:var(--cream-text);
+    opacity:0.85;
+  }
+  .decl-no{
+    font-size:11px;
+    letter-spacing:0.08em;
+    opacity:0.55;
+    text-align:right;
+    line-height:1.6;
+  }
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-optical-sizing:auto;
+    font-size:clamp(32px,6vw,44px);
+    line-height:1.05;
+    margin:0 0 10px;
+    letter-spacing:-0.01em;
+  }
+  .lede{
+    font-size:13px;
+    line-height:1.7;
+    opacity:0.68;
+    max-width:46ch;
+    margin:0 0 36px;
+  }
+
+  /* form card */
+  .form-card{
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:26px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    position:relative;
+  }
+  .form-card::before{
+    content:"";
+    position:absolute;
+    top:0;left:22px;right:22px;
+    height:1px;
+    background:repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 12px);
+    transform:translateY(-1px);
+  }
+
+  .field-label{
+    text-transform:uppercase;
+    font-size:10.5px;
+    letter-spacing:0.16em;
+    opacity:0.55;
+    margin-bottom:9px;
+    display:block;
+  }
+
+  .url-row{
+    display:flex;
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:2px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .url-row input{
+    flex:1;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:var(--cream-text);
+    font-family:'Space Mono', monospace;
+    font-size:13.5px;
+    padding:15px 14px;
+  }
+  .url-row input::placeholder{color:var(--cream-text);opacity:0.32;}
+  .url-row .src-tag{
+    display:flex;
+    align-items:center;
+    padding:0 14px;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--amber);
+    border-left:1px solid var(--line);
+    white-space:nowrap;
+    opacity:0;
+    transition:opacity 0.25s ease;
+  }
+  .url-row .src-tag.show{opacity:1;}
+
+  .row{
+    display:flex;
+    gap:24px;
+    margin-bottom:26px;
+    flex-wrap:wrap;
+  }
+  .row .col{flex:1;min-width:180px;}
+
+  .toggle-pair{
+    display:flex;
+    border:1px solid var(--line);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .toggle-pair button{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--cream-text);
+    font-family:'Space Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.08em;
+    padding:12px 10px;
+    cursor:pointer;
+    opacity:0.55;
+    transition:all 0.18s ease;
+    border-right:1px solid var(--line);
+  }
+  .toggle-pair button:last-child{border-right:none;}
+  .toggle-pair button.active{
+    opacity:1;
+    background:rgba(232,163,61,0.12);
+    color:var(--amber);
+  }
+  .toggle-pair button:focus-visible{outline:2px solid var(--amber);outline-offset:-2px;}
+
+  select{
+    width:100%;
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:2px;
+    color:var(--cream-text);
+    font-family:'Space Mono', monospace;
+    font-size:12.5px;
+    padding:12px 10px;
+    outline:none;
+    cursor:pointer;
+    appearance:none;
+    background-image:linear-gradient(45deg, transparent 50%, var(--cream-text) 50%), linear-gradient(135deg, var(--cream-text) 50%, transparent 50%);
+    background-position: calc(100% - 16px) center, calc(100% - 11px) center;
+    background-size:5px 5px, 5px 5px;
+    background-repeat:no-repeat;
+    opacity:0.85;
+  }
+  select:focus-visible{outline:2px solid var(--amber);outline-offset:1px;}
+
+  .process-btn{
+    width:100%;
+    background:var(--amber);
+    color:var(--ink);
+    border:none;
+    border-radius:2px;
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    padding:16px;
+    cursor:pointer;
+    transition:transform 0.12s ease, background 0.18s ease;
+    position:relative;
+  }
+  .process-btn:hover{background:#f0b357;}
+  .process-btn:active{transform:scale(0.99);}
+  .process-btn:focus-visible{outline:2px solid var(--cream-text);outline-offset:2px;}
+  .process-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+  .error-msg{
+    font-size:11.5px;
+    color:var(--red);
+    margin-top:10px;
+    min-height:14px;
+    letter-spacing:0.02em;
+  }
+
+  /* processing state */
+  .processing{
+    display:none;
+    align-items:center;
+    gap:12px;
+    margin-top:20px;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    opacity:0.7;
+  }
+  .processing.show{display:flex;}
+  .stamp-spin{
+    width:14px;height:14px;
+    border:2px solid var(--line);
+    border-top-color:var(--amber);
+    border-radius:50%;
+    animation:spin 0.8s linear infinite;
+    flex-shrink:0;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* ticket stub */
+  .stub-wrap{
+    margin-top:34px;
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.5s ease;
+  }
+  .stub-wrap.show{max-height:600px;}
+
+  .stub{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:3px;
+    position:relative;
+    padding:0;
+    transform:translateY(10px) rotate(-0.4deg);
+    opacity:0;
+    transition:all 0.5s cubic-bezier(0.2,0.8,0.2,1);
+  }
+  .stub-wrap.show .stub{
+    transform:translateY(0) rotate(-0.4deg);
+    opacity:1;
+  }
+
+  .stub-top, .stub-bottom{padding:20px 22px;}
+  .stub-top{padding-bottom:16px;}
+
+  .stub-eyebrow{
+    display:flex;
+    justify-content:space-between;
+    font-size:10px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    opacity:0.5;
+    margin-bottom:14px;
+  }
+
+  .stub-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    line-height:1.25;
+    margin:0 0 16px;
+  }
+
+  .stub-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 16px;
+    font-size:11px;
+  }
+  .stub-meta div span{display:block;}
+  .stub-meta .k{text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;margin-bottom:3px;font-size:9.5px;}
+  .stub-meta .v{font-weight:700;}
+
+  .perforation{
+    height:0;
+    border-top:2px dashed rgba(27,36,48,0.28);
+    position:relative;
+    margin:0 0;
+  }
+  .perforation::before, .perforation::after{
+    content:"";
+    position:absolute;
+    top:-9px;
+    width:18px;height:18px;
+    background:var(--ink);
+    border-radius:50%;
+  }
+  .perforation::before{left:-31px;}
+  .perforation::after{right:-31px;}
+
+  .stub-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .stamp{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--red);
+    border:2px solid var(--red);
+    border-radius:3px;
+    padding:5px 10px;
+    transform:rotate(-6deg);
+    white-space:nowrap;
+  }
+  .download-btn{
+    background:var(--ink);
+    color:var(--cream-text);
+    border:none;
+    border-radius:2px;
+    font-family:'Space Mono', monospace;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    padding:12px 16px;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:background 0.18s ease;
+  }
+  .download-btn:hover{background:#2b3a4c;}
+  .download-btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+
+  .demo-note{
+    font-size:10.5px;
+    line-height:1.6;
+    color:var(--cream-text);
+    opacity:0;
+    max-height:0;
+    overflow:hidden;
+    transition:all 0.35s ease;
+    border-left:2px solid var(--amber);
+    padding-left:0;
+    margin-top:0;
+  }
+  .demo-note.show{
+    opacity:0.72;
+    max-height:60px;
+    padding:2px 0 2px 12px;
+    margin-top:16px;
+  }
+
+  footer{
+    text-align:center;
+    font-size:10px;
+    letter-spacing:0.08em;
+    opacity:0.35;
+    margin-top:40px;
+    text-transform:uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  @media (max-width:480px){
+    .perforation::before{left:-14px;}
+    .perforation::after{right:-14px;}
+    body{padding:32px 14px 60px;}
+    .stub-bottom{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="letterhead">
+    <div class="mark">
+      <div class="dot"></div>
+      <span>Media Customs</span>
+    </div>
+    <div class="decl-no">FORM No. MC-0417<br>UI DEMO — NO SERVER SIDE</div>
+  </div>
+
+  <h1>Declare a link,<br>collect your file.</h1>
+  <p class="lede">Paste a video URL, choose what you want out of it, and we'll process a declaration. This is an interface demo only — no actual media is fetched or converted.</p>
+
+  <div class="form-card">
+    <label class="field-label" for="url-input">Source URL</label>
+    <div class="url-row">
+      <input id="url-input" type="text" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off" spellcheck="false">
+      <div class="src-tag" id="src-tag">—</div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label class="field-label">Format</label>
+        <div class="toggle-pair" role="group" aria-label="Output format">
+          <button type="button" class="fmt-btn active" data-fmt="mp4">MP4 · Video</button>
+          <button type="button" class="fmt-btn" data-fmt="mp3">MP3 · Audio</button>
+        </div>
+      </div>
+      <div class="col">
+        <label class="field-label" for="quality-select">Quality</label>
+        <select id="quality-select"></select>
+      </div>
+    </div>
+
+    <button class="process-btn" id="process-btn" type="button">Process declaration →</button>
+    <div class="error-msg" id="error-msg"></div>
+
+    <div class="processing" id="processing">
+      <div class="stamp-spin"></div>
+      <span>Inspecting link…</span>
+    </div>
+
+    <div class="stub-wrap" id="stub-wrap">
+      <div class="stub">
+        <div class="stub-top">
+          <div class="stub-eyebrow">
+            <span id="stub-source">Source: —</span>
+            <span id="stub-id">#000000</span>
+          </div>
+          <h2 class="stub-title" id="stub-title">—</h2>
+          <div class="stub-meta">
+            <div><span class="k">Format</span><span class="v" id="stub-format">—</span></div>
+            <div><span class="k">Quality</span><span class="v" id="stub-quality">—</span></div>
+            <div><span class="k">Est. size</span><span class="v" id="stub-size">—</span></div>
+            <div><span class="k">Runtime</span><span class="v" id="stub-runtime">—</span></div>
+          </div>
+        </div>
+        <div class="perforation"></div>
+        <div class="stub-bottom">
+          <div class="stamp">Processed</div>
+          <button class="download-btn" id="download-btn" type="button">Download file</button>
+        </div>
+      </div>
+      <div class="demo-note" id="demo-note">This button is for show — wire it up to a real conversion service to enable actual downloads.</div>
+    </div>
+  </div>
+
+  <footer>Frontend demo · no data leaves your browser</footer>
+</div>
+
+<script>
+  const qualities = {
+    mp4: ['1080p', '720p', '480p', '360p'],
+    mp3: ['320 kbps', '192 kbps', '128 kbps']
+  };
+
+  const urlInput = document.getElementById('url-input');
+  const srcTag = document.getElementById('src-tag');
+  const fmtBtns = document.querySelectorAll('.fmt-btn');
+  const qualitySelect = document.getElementById('quality-select');
+  const processBtn = document.getElementById('process-btn');
+  const errorMsg = document.getElementById('error-msg');
+  const processing = document.getElementById('processing');
+  const stubWrap = document.getElementById('stub-wrap');
+  const downloadBtn = document.getElementById('download-btn');
+  const demoNote = document.getElementById('demo-note');
+
+  let currentFmt = 'mp4';
+
+  function populateQuality(){
+    qualitySelect.innerHTML = qualities[currentFmt]
+      .map(q => `<option value="${q}">${q}</option>`)
+      .join('');
+  }
+  populateQuality();
+
+  function detectSource(url){
+    const u = url.toLowerCase();
+    if(u.includes('youtube.com') || u.includes('youtu.be')) return 'YouTube';
+    if(u.includes('tiktok.com')) return 'TikTok';
+    if(u.includes('instagram.com')) return 'Instagram';
+    if(u.includes('twitter.com') || u.includes('x.com')) return 'X / Twitter';
+    if(u.includes('facebook.com') || u.includes('fb.watch')) return 'Facebook';
+    if(u.trim() === '') return '';
+    return 'Unrecognized';
+  }
+
+  urlInput.addEventListener('input', () => {
+    const src = detectSource(urlInput.value);
+    if(src){
+      srcTag.textContent = src;
+      srcTag.classList.add('show');
+    } else {
+      srcTag.classList.remove('show');
+    }
+    errorMsg.textContent = '';
+  });
+
+  fmtBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      fmtBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFmt = btn.dataset.fmt;
+      populateQuality();
+    });
+  });
+
+  function randomSize(fmt){
+    if(fmt === 'mp3'){
+      return (Math.random()*6 + 2).toFixed(1) + ' MB';
+    }
+    return (Math.random()*180 + 20).toFixed(0) + ' MB';
+  }
+
+  function randomRuntime(){
+    const m = Math.floor(Math.random()*8);
+    const s = Math.floor(Math.random()*60).toString().padStart(2,'0');
+    return `${m}:${s}`;
+  }
+
+  function titleFromUrl(url, source){
+    try{
+      const u = new URL(url);
+      const seg = u.pathname.split('/').filter(Boolean).pop();
+      if(seg && seg.length > 3 && !seg.includes('watch')){
+        return 'Clip — ' + decodeURIComponent(seg).replace(/[-_]/g,' ').slice(0, 48);
+      }
+    }catch(e){}
+    return source ? `Untitled clip from ${source}` : 'Untitled clip';
+  }
+
+  processBtn.addEventListener('click', () => {
+    const url = urlInput.value.trim();
+    errorMsg.textContent = '';
+    stubWrap.classList.remove('show');
+    demoNote.classList.remove('show');
+
+    if(!url){
+      errorMsg.textContent = 'Enter a URL before submitting a declaration.';
+      return;
+    }
+    let valid = true;
+    try{ new URL(url); } catch(e){ valid = false; }
+    if(!valid){
+      errorMsg.textContent = 'That doesn\'t look like a valid URL.';
+      return;
+    }
+
+    const source = detectSource(url) || 'Unrecognized';
+
+    processBtn.disabled = true;
+    processing.classList.add('show');
+
+    setTimeout(() => {
+      processing.classList.remove('show');
+      processBtn.disabled = false;
+
+      document.getElementById('stub-source').textContent = 'Source: ' + source;
+      document.getElementById('stub-id').textContent = '#' + Math.floor(100000 + Math.random()*899999);
+      document.getElementById('stub-title').textContent = titleFromUrl(url, source);
+      document.getElementById('stub-format').textContent = currentFmt.toUpperCase();
+      document.getElementById('stub-quality').textContent = qualitySelect.value;
+      document.getElementById('stub-size').textContent = randomSize(currentFmt);
+      document.getElementById('stub-runtime').textContent = randomRuntime();
+
+      stubWrap.classList.add('show');
+    }, 1400);
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    demoNote.classList.add('show');
+  });
+</script>
+
+</body>
+</html>
