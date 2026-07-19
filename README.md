@@ -37,8 +37,6 @@ React (UI) ──POST /api/download──▶ Express ──spawns──▶ Pytho
 
 Express doesn't do any media processing itself — it just orchestrates the Python script, waits for it to finish, finds the output file, sends it back to the client, then deletes the temp file.
 
-> Note: `client`/`server` here refer to the folder names in this repo — earlier versions of this project used `frontend`/`backend`, but the code itself doesn't hardcode either name (all paths are relative), so the rename required no code changes.
-
 ## Requirements
 
 Make sure these are installed and available on your system `PATH` before running:
@@ -129,4 +127,4 @@ Downloads and converts a video/audio file, returning it as a binary file respons
 
 ## License
 
-Personal / educational project. Not affiliated with YouTube, TikTok, Instagram, or yt-dlp.
+This is only  for personal educational project. Not affiliated with YouTube, TikTok, Instagram, or yt-dlp.
