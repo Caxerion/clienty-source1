@@ -13,11 +13,11 @@ Built as a full-stack project: React frontend, Express API, and a Python + yt-dl
 
 ## Tech Stack
 
-**Frontend**
+**Client Side/Frontend**
 - React + Vite
 - Plain CSS/CSS3 (Space Mono + Fraunces fonts)
 
-**Backend**
+**Server side/Backend**
 - Node.js + Express
 - Python 3 + [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 - FFmpeg (audio/video merging and encoding)
