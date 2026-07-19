@@ -407,19 +407,7 @@ select:focus-visible{outline:2px solid var(--amber);outline-offset:1px;}
   justify-content:space-between;
   gap:14px;
 }
-.stamp{
-  font-family:'Fraunces', serif;
-  font-weight:700;
-  font-size:11px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--red);
-  border:2px solid var(--red);
-  border-radius:3px;
-  padding:5px 10px;
-  transform:rotate(-6deg);
-  white-space:nowrap;
-}
+
 .download-btn{
   background:var(--ink);
   color:var(--cream-text);
